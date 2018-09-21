@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ host }}"
+- hosts: "{{ host_name }}"
   become: yes
   roles: 
      - ansible-nexus

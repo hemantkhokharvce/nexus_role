@@ -1,5 +1,4 @@
 ---
-# tasks file for ansible-nexus
 - name: Download nexus_package 
   get_url: url=http://download.sonatype.com/nexus/oss/{{ nexus_package }} dest={{ nexus_download_dir }}/{{ nexus_package }}
  
@@ -43,12 +42,11 @@
   synchronize:
     src: "{{ nexus_installation_dir }}/sonatype-work"
     dest: "{{ nexus_working_dir }}"
-  delegate_to: "{{ host }}"
+  delegate_to: "{{ host_name }}"
   when: s_w.stat.exists
  
 - name: Set permissions and ownership on some Nexus directories
   file:
-          #  path={{ nexus_installation_dir }}/{{ nexus_package }}
     path: "{{ item }}"
     state: directory
     owner: "{{ nexus_os_user }}"
@@ -58,18 +56,6 @@
   with_items:
     - "{{ nexus_installation_dir }}/{{ nexus_package }}"
     - "{{ nexus_working_dir }}"
-
-      #- name: Set permissions and ownership on Nexus work directory
-      #  file:
-      #    path={{ nexus_working_dir }}
-      # state=directory
-      # owner={{ nexus_os_user }}
-      #  group={{ nexus_os_group }}
-      # mode="0755" 
-      #recurse=true
-      # with_items:
-      # - "{{ nexus_working_dir }}"
-
 
 - name: Set permissions and ownership on Nexus logs directory
   file:
@@ -82,20 +68,6 @@
     - "{{ nexus_installation_dir }}/nexus-latest/tmp"
     - "/var/run/nexus"
   
-      #- name: Set permissions and ownership on Nexus tmp directory
-      # file:
-      #path: "{{ nexus_installation_dir }}/nexus-latest/tmp"
-      # owner: "{{ nexus_os_user }}"
-      #  group: "{{ nexus_os_group }}"
-      #state: directory
-
-      #- name: Set permissions and ownership on Nexus pid directory
-      #  file:
-      #    path=/var/run/nexus
-      #    owner={{ nexus_os_user }}
-      # group={{ nexus_os_group }}
-      #state=directory
-
 - name: Configure port in nexus.properties
   lineinfile:
     dest={{ nexus_installation_dir }}/nexus-{{ nexus_version }}/conf/nexus.properties

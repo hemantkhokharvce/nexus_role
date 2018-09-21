@@ -1,6 +1,6 @@
 ---
 # defaults file for ansible-nexus
-host: 'localhost'
+host_name: 'host'
 nexus_download_dir: '/tmp'
 nexus_version: 'latest'
 nexus_version: '2.10.0-02'
