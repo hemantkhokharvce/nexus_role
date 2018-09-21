@@ -27,8 +27,8 @@
 
 - name: Update symlink nexus-latest
   file:
-    src: "{{ nexus_installation_dir }}"/nexus-*|tail -1`
-    dest: "{{ nexus_installation_dir }}"/nexus-latest
+    src: "{{ nexus_installation_dir }}/nexus-{{ nexus_version }}"
+    dest: "{{ nexus_installation_dir }}/nexus-latest"
     state: link
 
 - name: Install createrepo for nexus-yum-repository-plugin
@@ -43,7 +43,7 @@
   synchronize:
     src: "{{ nexus_installation_dir }}/sonatype-work"
     dest: "{{ nexus_working_dir }}"
-  delegate_to: nexus
+  delegate_to: "{{ host }}"
   when: s_w.stat.exists
  
 - name: Set permissions and ownership on some Nexus directories
